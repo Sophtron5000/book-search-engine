@@ -9,6 +9,11 @@ const resolvers = {
         }
     },
     Mutation: {
+        addUser: async (parent, { username, email, password }) => {
+            const user = await User.create({username, email, password});
+            const token = singleToken(user);
+            return { token, user };
+          },
         login: async (parent, {email, password}) => {
             const userLogin = await User.findOne({email: email})
             if (!userLogin){
@@ -62,3 +67,5 @@ const resolvers = {
         // get bookId abd userId, use findByIdAndUpdate(User: _id, Book: bookId) $pull<=research
     }
 }
+
+module.exports = resolvers
